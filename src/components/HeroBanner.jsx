@@ -60,7 +60,7 @@ export default function HeroBanner({ children, subtitle, title }) {
             </div>
           </div> */}
         </div>
-        {/* <HeroFeatures />  start from hear*/}
+        <HeroFeatures /> 
         <MessageContainer />
         <PromptInput />
       </Container>

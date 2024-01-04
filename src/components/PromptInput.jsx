@@ -1,6 +1,6 @@
 export default function PromptInput() {
   return (
-    <div style={{ padding: "16px 0px 16px 0px" }}>
+    <div style={{ padding: "16px 8px 16px 8px" }}>
       <form >
         <label htmlFor="chat-input" className="sr-only">Enter your prompt</label>
         <div className="relative">

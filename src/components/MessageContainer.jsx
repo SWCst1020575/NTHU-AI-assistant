@@ -1,3 +1,4 @@
+import Dialogue from "./Dialogue"
 export default function MessageContainer() {
     return (
         <div
@@ -35,16 +36,7 @@ export default function MessageContainer() {
                     </p>
                 </div>
             </div>
-            <div className="flex px-2 py-4 sm:px-4">
-                <img
-                    className="mr-2 flex h-8 w-8 rounded-full sm:mr-4"
-                    src="https://dummyimage.com/256x256/363536/ffffff&text=U"
-                />
-
-                <div className="flex max-w-3xl text-slate-100 items-center">
-                    <p>What are three great applications of quantum computing?</p>
-                </div>
-            </div>
+            <Dialogue message="dsfdsagadsgadsgsdfdsf" />
             
         </div>
     )
