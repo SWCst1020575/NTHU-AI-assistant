@@ -1,9 +1,20 @@
 "use client";
-import  { useState } from 'react';
+import { useState } from 'react';
+import LinearProgress from '@mui/material/LinearProgress';
+import { usePromptListStore, useReplyListStore } from './data';
 
 export default function Dialogue(props) {
     const [msg, setMsg] = useState(props.message);
     const [reply, setReply] = useState("");
+    const prompts = usePromptListStore((state) => state.prompts)
+    const replys = useReplyListStore((state) => state.replys)
+    const ID = props.msgID
+    const renderReply = () => {
+        if (ID < replys.length)
+            return (<p>{replys[ID]}</p>)
+        else
+            return (<LinearProgress color="secondary" sx={{ height: "10px", borderRadius: "4px" }} className="w-full md:mx-6 mx-3" />)
+    }
     return (
         <>
             <div className="flex flex-row px-2 py-4 sm:px-4">
@@ -12,7 +23,7 @@ export default function Dialogue(props) {
                     src="https://dummyimage.com/256x256/363536/ffffff&text=U"
                 />
 
-                <div className="flex max-w-3xl text-slate-100 items-center">
+                <div className="flex text-slate-100 items-center">
                     <p>{msg}</p>
                 </div>
             </div>
@@ -24,11 +35,12 @@ export default function Dialogue(props) {
                     src="https://dummyimage.com/256x256/354ea1/ffffff&text=G"
                 />
 
-                <div className="flex max-w-3xl text-slate-100 items-center rounded-xl">
-                    <p>
-                        {reply}
-                    </p>
+                <div className="flex w-full  text-slate-100 items-center rounded-xl">
+
+                    {renderReply()}
+
                 </div>
+
             </div>
         </>
     )

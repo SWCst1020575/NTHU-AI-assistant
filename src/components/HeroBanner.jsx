@@ -1,3 +1,4 @@
+"use client";
 import Container from '@component/Container'
 import HeroPattern from './HeroPattern'
 import HeroGradient from './HeroGradient'
@@ -5,16 +6,23 @@ import BrandLogo from './BrandLogo'
 import HeroComponentsPreview from './HeroComponentsPreview'
 import HeroFeatures from './HeroFeatures'
 import Link from 'next/link'
-import HeroBadge from './HeroBadge'
+import { useIsEnterStore } from './data';
 import MessageContainer from './MessageContainer'
 import PromptInput from './PromptInput'
 
 export default function HeroBanner({ children, subtitle, title }) {
+  const isEnter = useIsEnterStore((state) => state.isEnter)
+  const renderHome = () => {
+    if (isEnter)
+      return (<><div className="relative isolate overflow-hidden mb-10" /><MessageContainer /></>)
+    else
+      return (<><div className="relative isolate overflow-hidden mb-40" /><HeroFeatures /></>)
+  }
   return (
     <section className="bg-indigo-950">
       <Container classNames="py-8 lg:py-12">
-        <div className="relative isolate overflow-hidden lg:mb-40">
-          {/* <HeroPattern />
+        {/* <div className="relative isolate overflow-hidden lg:mb-40">
+          <HeroPattern />
           <HeroGradient />
           <div className="mx-auto max-w-7xl px-6 py-24 sm:pb-32 lg:flex lg:px-3 lg:py-32 xl:px-6">
             <div className="max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-lg lg:pt-8 xl:max-w-xl">
@@ -58,10 +66,11 @@ export default function HeroBanner({ children, subtitle, title }) {
             <div className="mx-auto ml-0 mt-16 grid w-full max-w-4xl auto-cols-max auto-rows-max grid-cols-2 gap-x-2 gap-y-4 lg:-mt-10 lg:ml-4 lg:grid-cols-2 xl:ml-32 xl:grid-cols-1">
               <HeroComponentsPreview />
             </div>
-          </div> */}
-        </div>
-        <HeroFeatures /> 
-        <MessageContainer />
+          </div>
+        </div> */}
+        {/* <HeroFeatures /> 
+        <MessageContainer /> */}
+        {renderHome()}
         <PromptInput />
       </Container>
     </section>
