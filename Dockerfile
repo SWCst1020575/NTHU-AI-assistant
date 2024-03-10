@@ -1,20 +1,23 @@
-# Use node:alpine3.17 image as the base image
-FROM docker.io/node:alpine3.17
+FROM nvidia/cuda:12.1.0-devel-ubuntu22.04
 
-# Maintainer information
-MAINTAINER tanwenyang@aliyun.com
+COPY ./requirements.txt /
+COPY ./*.py /
+COPY ./model /model
 
-# Copy the vue-color-avatar file from the local directory to the /app directory inside the container
-COPY . /app
+# Use nchc mirror
+RUN apt-get install ca-certificates -y
+RUN sed -i 's/htt[p|ps]:\/\/archive.ubuntu.com\/ubuntu\//http:\/\/free.nchc.org.tw\/ubuntu/g' /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install -y python3 python3-pip
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
-# Expose port 3000 of the container and allow external access to this port
-EXPOSE 3000
+# Environment variable
+ENV PATH="/usr/local/cuda/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+ARG PYTORCH="2.0.1"
+ARG CUDA="121"
 
-# Change the working directory to /app
-WORKDIR /app
+RUN pip install --no-cache-dir -r /requirements.txt
 
-# Set the Yarn registry to Taobao mirror and install dependencies using yarn install
-RUN yarn config set registry 'https://registry.npm.taobao.org' && yarn install && yarn cache clean
-
-# Run the command to start the container, which will run the project in development mode and listen on port 5173 of address 0.0.0.0
-CMD yarn dev
+CMD ["python3", "openai_api_server.py","--base_model","hfl/chinese-alpaca-2-7b","--lora_model","/model/sft_lora_model/","--load_in_8bit"]
